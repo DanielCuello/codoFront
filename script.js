@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const productForm = document.getElementById('productForm');
     const productosContainer = document.getElementById('productos');
-    const apiUrl = 'https://codoback.onrender.com/productos'; // URL de tu backend (para desarrollo local)
+    const apiUrl = 'http://localhost:3000/productos'; // Reemplaza con la URL de tu backend
 
     // Función para obtener y mostrar los productos desde el servidor
     const fetchProducts = async () => {
@@ -86,6 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const id = e.target.dataset.id;
             try {
                 const response = await fetch(`${apiUrl}/${id}`);
+                if (!response.ok) {
+                    throw new Error('No se pudo obtener el producto para editar');
+                }
                 const product = await response.json();
                 document.getElementById('productId').value = id;
                 document.getElementById('nombre').value = product.nombre;
@@ -96,14 +99,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('fk_promos').value = product.fk_promos;
                 document.getElementById('fk_cuotas').value = product.fk_cuotas;
             } catch (error) {
-                console.error('Error fetching product:', error);
+                console.error('Error fetching product for edit:', error);
             }
         } else if (e.target.classList.contains('delete')) {
             const id = e.target.dataset.id;
             try {
-                await fetch(`${apiUrl}/${id}`, {
+                const response = await fetch(`${apiUrl}/${id}`, {
                     method: 'DELETE'
                 });
+                if (!response.ok) {
+                    throw new Error('No se pudo eliminar el producto');
+                }
                 fetchProducts(); // Actualizar la lista de productos después de eliminar
             } catch (error) {
                 console.error('Error deleting product:', error);
