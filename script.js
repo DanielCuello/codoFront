@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const productForm = document.getElementById('productForm');
     const productosContainer = document.getElementById('productos');
-    const apiUrl = 'http://localhost:3000/productos'; // Reemplaza con la URL de tu backend
+    const apiUrl = 'https://codoback.onrender.com/productos'; // Reemplaza con la URL de tu backend
 
     // Función para obtener y mostrar los productos desde el servidor
     const fetchProducts = async () => {
